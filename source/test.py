@@ -286,9 +286,27 @@ from file_io.PathAnalysis import get_movie_event
 #     if boundaries > 7:
 #         copy_file(movie, 'D:\\MovieQuerier\\good\\' + name + ".mov")
 
-import cPickle
+# import cPickle
+#
+# db_file = open("/home/lihe/Desktop/resources/clip_information/info.cpickle", 'r')
+# db = cPickle.load(db_file)
+# db_file.close()
+# print db
 
-db_file = open("/home/lihe/Desktop/resources/clip_information/info.cpickle", 'r')
-db = cPickle.load(db_file)
-db_file.close()
-print db
+from interface import Interface
+
+interface = Interface("/home/lihe/Desktop/MovieQuerier")
+# print len(interface.get_scene_data())
+# print len(interface.get_actor_data())
+# print len(interface.get_info_data())
+# print interface.get_speed_data()
+# print interface.get_info_data()
+
+a = interface.get_scene_descriptor("/home/lihe/Desktop/1366.png")
+b = interface.get_scene_descriptor("/home/lihe/Desktop/1142.png")
+print interface.compare_descriptor(a, b)
+
+test = interface.get_scene_data()
+print len(test["45years-tlr1_h480p_6"])
+for index in test["45years-tlr1_h480p_6"]:
+    print interface.compare_descriptor(a, index)

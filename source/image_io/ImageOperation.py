@@ -1,16 +1,16 @@
 import cv2
 
-from file_io.FileOperation import write_image
-from file_io.FileOperation import delete_file
-from file_io.FileOperation import clear_images
-from file_io.PathAnalysis import get_all_frames
-from file_io.PathAnalysis import get_all_directories
-from file_io.PathAnalysis import transform_face_pool_path
-from file_io.PathAnalysis import transform_search_pool_path
+from source.file_io.FileOperation import write_image
+from source.file_io.FileOperation import delete_file
+from source.file_io.FileOperation import clear_images
+from source.file_io.PathAnalysis import get_all_frames
+from source.file_io.PathAnalysis import get_all_directories
+from source.file_io.PathAnalysis import transform_face_pool_path
+from source.file_io.PathAnalysis import transform_search_pool_path
 
-from image_io.ImageComparator import face_similarity
-from image_io.ImageComparator import histogram_face_similarity
-from image_io.ImageComparator import histogram_scene_similarity
+from source.image_io.ImageComparator import face_similarity
+from source.image_io.ImageComparator import histogram_face_similarity
+from source.image_io.ImageComparator import histogram_scene_similarity
 
 
 def get_brightness(image):

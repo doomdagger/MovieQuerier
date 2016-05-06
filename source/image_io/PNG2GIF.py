@@ -1,9 +1,16 @@
 import os
 import cv2
+from subprocess import call
 
-from file_io.PathAnalysis import get_all_frames
-from file_io.PathAnalysis import get_all_directories
-from file_io.PathAnalysis import get_last_directory_name
+from source.file_io.PathAnalysis import get_all_frames
+from source.file_io.PathAnalysis import get_all_directories
+from source.file_io.PathAnalysis import get_last_directory_name
+
+
+def convert_avi2mp4(file_path):
+    file_path = file_path.strip(".avi")
+    command = "avconv -i %s.avi -c:v libx264 -c:a copy %s.mp4" % (file_path, file_path)
+    call(command.split())
 
 
 def generate_clip(directory, copy_to_path, width, height):
@@ -34,5 +41,6 @@ def generate_all_clips(root_directory, copy_to_directory, video_info):
         avi_name = get_last_directory_name(directory) + ".avi"
         copy_to_path = os.path.join(copy_to_directory, avi_name)
         generate_clip(directory, copy_to_path, video_info['WIDTH'], video_info['HEIGHT'])
+        convert_avi2mp4(copy_to_path)
         print "\t\tCurrently processed: " + str(event_index)
         event_index += 1

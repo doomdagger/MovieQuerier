@@ -1,7 +1,7 @@
 import cv2
 import numpy
 
-from image_io.ImageEncoder import ImageEncoder
+from source.image_io.ImageEncoder import ImageEncoder
 # from skimage.measure import structural_similarity as ssim
 
 

@@ -68,3 +68,6 @@ dump.rdb
 
 resources/*
 !resources/README.md
+
+uploads/*
+!uploads/README.md

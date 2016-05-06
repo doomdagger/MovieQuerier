@@ -1,19 +1,19 @@
 import os
 import argparse
 
-from database_io.DataLoader import DataLoader
+from source.database_io.DataLoader import DataLoader
 
-from file_io.FileOperation import copy_file
-from file_io.PathManager import PathManager
-from file_io.PathAnalysis import get_movie_name
+from source.file_io.FileOperation import copy_file
+from source.file_io.PathManager import PathManager
+from source.file_io.PathAnalysis import get_movie_name
 
-from image_io.FaceDetector import FaceDetector
-from image_io.ImageOperation import build_face_pool_for_movie
-from image_io.ImageOperation import build_search_pool_for_movie
+from source.image_io.FaceDetector import FaceDetector
+from source.image_io.ImageOperation import build_face_pool_for_movie
+from source.image_io.ImageOperation import build_search_pool_for_movie
 
-from video_io.VideoLoader import VideoLoader
-from video_io.ClipOrganizer import ClipOrganizer
-from video_io.MovementTracker import MovementTracker
+from source.video_io.VideoLoader import VideoLoader
+from source.video_io.ClipOrganizer import ClipOrganizer
+from source.video_io.MovementTracker import MovementTracker
 
 argument_parser = argparse.ArgumentParser()
 argument_parser.add_argument("-m", "--movie", required=True, help="The path to the movie")

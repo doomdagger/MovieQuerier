@@ -1,15 +1,15 @@
 import os
 import cv2
 
-from image_io.ImageOperation import get_brightness
-from image_io.ImageOperation import remove_similar_faces
-from image_io.ImageOperation import get_standard_derivation
+from source.image_io.ImageOperation import get_brightness
+from source.image_io.ImageOperation import remove_similar_faces
+from source.image_io.ImageOperation import get_standard_derivation
 
-from file_io.PathAnalysis import get_all_frames
-from file_io.PathAnalysis import get_all_directories
+from source.file_io.PathAnalysis import get_all_frames
+from source.file_io.PathAnalysis import get_all_directories
 
-from file_io.PathAnalysis import get_frame_name
-from file_io.PathAnalysis import get_last_directory_name
+from source.file_io.PathAnalysis import get_frame_name
+from source.file_io.PathAnalysis import get_last_directory_name
 
 
 class FaceDetector:

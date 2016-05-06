@@ -1,13 +1,15 @@
 import os
 
-from FileOperation import clear_directory
-from database_io.DataLoader import DataLoader
+from .FileOperation import clear_directory
+from source.database_io.DataLoader import DataLoader
 
 
 class PathManager:
-    def __init__(self):
-        current_path = os.getcwd()
-        self._forbidden_project_path = os.path.dirname(current_path)
+    def __init__(self, root_path=None):
+        if not root_path:
+            self._forbidden_project_path = os.path.dirname(os.getcwd())
+        else:
+            self._forbidden_project_path = root_path
 
         self.RESOURCES_PATH = os.path.join(self._forbidden_project_path, "resources")
         self.RAW_VIDEO_PATH = os.path.join(self.RESOURCES_PATH, "raw_videos")

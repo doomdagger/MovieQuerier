@@ -3,18 +3,21 @@ import cv2
 import math
 import numpy
 
-from image_io.ImageEncoder import ImageEncoder
-from image_io.FaceDetector import FaceDetector
+from source.image_io.ImageEncoder import ImageEncoder
+from source.image_io.FaceDetector import FaceDetector
 
-from file_io.PathAnalysis import get_key
-from file_io.PathAnalysis import get_movie_event
+from source.file_io.PathAnalysis import get_key
+from source.file_io.PathAnalysis import get_movie_event
 
-from file_io.PathAnalysis import get_all_clips
-from file_io.PathAnalysis import get_all_frames
-from file_io.PathAnalysis import get_all_directories
+from source.file_io.PathAnalysis import get_all_clips
+from source.file_io.PathAnalysis import get_all_frames
+from source.file_io.PathAnalysis import get_all_directories
 
-from file_io.PathAnalysis import get_movie_name
-from file_io.PathAnalysis import get_last_directory_name
+from source.file_io.PathAnalysis import get_movie_name
+from source.file_io.PathAnalysis import get_last_directory_name
+
+from source.file_io.PathManager import PathManager
+from source.database_io.DataLoader import DataLoader
 
 
 class Interface:
@@ -23,6 +26,7 @@ class Interface:
         self.ENCODER = ImageEncoder()
         self.DETECTOR = FaceDetector(os.path.join(root_directory,
                                                   'source', 'image_io', 'haarcascade_frontalface_default.xml'))
+        self.DATA_LOADER = DataLoader("", PathManager(root_directory))
 
         self._forbidden_project_path = root_directory
         self.RESOURCES_PATH = os.path.join(self._forbidden_project_path, "resources")
@@ -71,6 +75,18 @@ class Interface:
 
     def _get_scene_directory(self, movie_name, event_index):
         return os.path.join(self._get_movie_workspace(movie_name)['SCENES'], str(event_index))
+
+    def get_info_data(self):
+        return self.DATA_LOADER.load_info_data()
+
+    def get_scene_data(self):
+        return self.DATA_LOADER.load_scene_data()
+
+    def get_actor_data(self):
+        return self.DATA_LOADER.load_actor_data()
+
+    def get_speed_data(self):
+        return self.DATA_LOADER.load_speed_data()
 
     # Return a list of movie names
     def get_all_movie_names(self):

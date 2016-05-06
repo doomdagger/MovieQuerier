@@ -1,12 +1,12 @@
 import cv2
 import cPickle
 
-from file_io.PathAnalysis import get_key
-from file_io.PathAnalysis import get_all_frames
-from file_io.PathAnalysis import get_all_directories
-from file_io.PathAnalysis import get_last_directory_name
+from source.file_io.PathAnalysis import get_key
+from source.file_io.PathAnalysis import get_all_frames
+from source.file_io.PathAnalysis import get_all_directories
+from source.file_io.PathAnalysis import get_last_directory_name
 
-from image_io.ImageEncoder import ImageEncoder
+from source.image_io.ImageEncoder import ImageEncoder
 
 
 class DataLoader:
@@ -69,6 +69,30 @@ class DataLoader:
         db_file.close()
 
         print len(db)
+
+    def load_info_data(self):
+        db_file = open(self.INFO_DB, 'r')
+        db = cPickle.load(db_file)
+        db_file.close()
+        return db
+
+    def load_scene_data(self):
+        db_file = open(self.SCENE_DB, 'r')
+        db = cPickle.load(db_file)
+        db_file.close()
+        return db
+
+    def load_actor_data(self):
+        db_file = open(self.ACTOR_DB, 'r')
+        db = cPickle.load(db_file)
+        db_file.close()
+        return db
+
+    def load_speed_data(self):
+        db_file = open(self.SPEED_DB, 'r')
+        db = cPickle.load(db_file)
+        db_file.close()
+        return db
 
     @staticmethod
     def parse_movie_information(movie_name, video_info, boundaries):
