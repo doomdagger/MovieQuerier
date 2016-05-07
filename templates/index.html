@@ -128,8 +128,11 @@
                             }
                             var temp = '<div class="col-md-4"> \
                                             <div align="center" class="embed-responsive embed-responsive-16by9"> \
-                                                <embed class="embed-responsive-item" src="' + value.url + '"/>\
+                                                <video autoplay loop class="embed-responsive-item" controls> \
+                                                    <source src="'+ value.url +'" type="video/mp4"> \
+                                                </video> \
                                             </div> \
+                                            <div>'+ key +'</div>\
                                         </div>';
                             row.append($(temp));
                             count++;

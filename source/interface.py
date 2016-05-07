@@ -121,7 +121,7 @@ class Interface:
     # Return the clip path to that event
     def get_clip_path(self, key):
         movie, event = get_movie_event(key)
-        return os.path.join(self._get_movie_workspace(movie)['CLIPS'], event + ".avi")
+        return os.path.join(self._get_movie_workspace(movie)['CLIPS'], event + ".mp4")
 
     # Input event key
     # Return the paths of face images appeared in that event

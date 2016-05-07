@@ -302,11 +302,11 @@ interface = Interface("/home/lihe/Desktop/MovieQuerier")
 # print interface.get_speed_data()
 # print interface.get_info_data()
 
-a = interface.get_scene_descriptor("/home/lihe/Desktop/1366.png")
-b = interface.get_scene_descriptor("/home/lihe/Desktop/1142.png")
-print interface.compare_descriptor(a, b)
+a = interface.get_scene_descriptor("/home/lihe/Desktop/2862.png")
+# b = interface.get_scene_descriptor("/home/lihe/Desktop/1142.png")
+# print interface.compare_descriptor(a, b)
 
 test = interface.get_scene_data()
-print len(test["45years-tlr1_h480p_6"])
-for index in test["45years-tlr1_h480p_6"]:
+print len(test["45years-tlr1_h480p_13"])
+for index in test["45years-tlr1_h480p_13"]:
     print interface.compare_descriptor(a, index)

@@ -97,10 +97,11 @@ def query():
         for key in pending_rm_keys:
             del scene_comp_ret[key]
 
-    ret = OrderedDict(sorted(scene_comp_ret.items(), key=operator.itemgetter(1)))
+    temp_ret = OrderedDict(sorted(scene_comp_ret.items(), key=operator.itemgetter(1)))
     all_infos = interface.get_info_data()
-
-    for key, value in ret.iteritems():
+    ret = OrderedDict()
+    count = 1
+    for key, value in temp_ret.iteritems():
         temp = {
             'cover_url': os.path.relpath(interface.get_cover_for_event(key), os.path.join(os.getcwd(), 'resources')),
             'url': '/assets/' + os.path.relpath(interface.get_clip_path(key), os.path.join(os.getcwd(), 'resources')),
@@ -109,6 +110,9 @@ def query():
             'end': all_infos[key][2]
         }
         ret[key] = temp
+        count += 1
+        if count > 9:
+            break
 
     return json.dumps(ret)
 

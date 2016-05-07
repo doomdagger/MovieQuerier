@@ -40,7 +40,7 @@ def get_all_frames(path):
 
 def get_all_clips(path):
     all_clips = []
-    match_pattern = os.path.join(path, "*.avi")
+    match_pattern = os.path.join(path, "*.mp4")
     for GIF_path in glob.glob(match_pattern):
         all_clips.append(GIF_path)
     all_clips.sort()
