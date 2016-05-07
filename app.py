@@ -1,9 +1,11 @@
-import os
+import json
 import operator
+import os
 from collections import OrderedDict
+
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-import json
+
 from source.interface import Interface
 
 interface = Interface(os.getcwd())
@@ -16,11 +18,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # 0-5, 5-10, 10-15, 15-20, 20+
 tempo_metric = [
-    (0, 5),
-    (5, 10),
+    (0, 3),
+    (3, 6),
+    (6, 10),
     (10, 15),
-    (15, 20),
-    (20, 9999)
+    (15, 9999)
 ]
 
 
@@ -41,7 +43,7 @@ def query():
     scene_file = request.files['scene']
 
     # no scene, not allowed!!
-    if not scene_file.filename:
+    if not scene_file or not scene_file.filename:
         return jsonify(message='Please at least select one scene image'), 402
 
     if scene_file and scene_file.filename and allowed_file(scene_file.filename):
@@ -69,21 +71,20 @@ def query():
                 cur_key_ret = temp
         scene_comp_ret[key] = cur_key_ret
 
-    if actor_file.filename:
+    if actor_file and actor_file.filename:
         actor_descriptor = interface.get_face_descriptor(
-            os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(actor_file.filename)))
+            os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(actor_file.filename)), unique=True)
         all_actors = interface.get_actor_data()
 
         actor_comp_ret = {}
         for key, value in scene_comp_ret.iteritems():
             if all_actors.get(key) is None:
                 continue
-            cur_key_ret = 99999
             for one_des in all_actors.get(key):
                 temp = interface.compare_descriptor(actor_descriptor, one_des)
-                if temp < cur_key_ret:
-                    cur_key_ret = temp
-            actor_comp_ret[key] = cur_key_ret
+                if temp < 3.0:
+                    actor_comp_ret[key] = value
+                    break
         scene_comp_ret = actor_comp_ret
 
     if tempo is not None and tempo != '-1':
@@ -103,7 +104,8 @@ def query():
     count = 1
     for key, value in temp_ret.iteritems():
         temp = {
-            'cover_url': os.path.relpath(interface.get_cover_for_event(key), os.path.join(os.getcwd(), 'resources')),
+            'cover_url': '/assets/' + os.path.relpath(interface.get_cover_for_event(key),
+                                                      os.path.join(os.getcwd(), 'resources')),
             'url': '/assets/' + os.path.relpath(interface.get_clip_path(key), os.path.join(os.getcwd(), 'resources')),
             'fps': all_infos[key][0],
             'start': all_infos[key][1],
@@ -116,6 +118,38 @@ def query():
 
     return json.dumps(ret)
 
+
+@app.route('/preview')
+def preview():
+    ret = []
+    all_movies = interface.get_all_movie_names()
+    for movie_name in all_movies:
+        temp = {
+            'cover_url': '/assets/' + os.path.relpath(interface.get_cover_for_movie(movie_name),
+                                                      os.path.join(os.getcwd(), 'resources')),
+            'url': '/assets/' + os.path.relpath(interface.get_raw_movie_path(movie_name),
+                                                os.path.join(os.getcwd(), 'resources')),
+            'name': movie_name
+        }
+        ret.append(temp)
+
+    return render_template('preview.html', movies=ret)
+
+
+@app.route('/clips/<movie_name>')
+def clips(movie_name):
+    ret = []
+    all_clips = interface.get_all_keys(movie_name)
+    for clip_name in all_clips:
+        temp = {
+            'cover_url': '/assets/' + os.path.relpath(interface.get_cover_for_event(clip_name),
+                                                      os.path.join(os.getcwd(), 'resources')),
+            'url': '/assets/' + os.path.relpath(interface.get_clip_path(clip_name),
+                                                os.path.join(os.getcwd(), 'resources')),
+            'name': clip_name
+        }
+        ret.append(temp)
+    return render_template('clip_panel.html', clips=ret)
 
 if __name__ == '__main__':
     app.run(debug=True)

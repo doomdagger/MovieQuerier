@@ -293,6 +293,7 @@ from file_io.PathAnalysis import get_movie_event
 # db_file.close()
 # print db
 
+import cv2
 from interface import Interface
 
 interface = Interface("/home/lihe/Desktop/MovieQuerier")
@@ -302,11 +303,17 @@ interface = Interface("/home/lihe/Desktop/MovieQuerier")
 # print interface.get_speed_data()
 # print interface.get_info_data()
 
-a = interface.get_scene_descriptor("/home/lihe/Desktop/2862.png")
-# b = interface.get_scene_descriptor("/home/lihe/Desktop/1142.png")
-# print interface.compare_descriptor(a, b)
+a = interface.get_face_descriptor("/home/lihe/Desktop/2198.png")
+b = interface.get_face_descriptor("/home/lihe/Desktop/2818.png")
+print interface.compare_descriptor(a[0], b[0])
+print len(a), len(b)
 
-test = interface.get_scene_data()
-print len(test["45years-tlr1_h480p_13"])
-for index in test["45years-tlr1_h480p_13"]:
-    print interface.compare_descriptor(a, index)
+# cv2.imshow("test", "/home/lihe/Desktop/898_1.png")
+# cv2.waitKey(0)
+#
+# cv2.imshow("test", "/home/lihe/Desktop/2667_0.png")
+# cv2.waitKey(0)
+# test = interface.get_scene_data()
+# print len(test["45years-tlr1_h480p_13"])
+# for index in test["45years-tlr1_h480p_13"]:
+#     print interface.compare_descriptor(a, index)

@@ -1,0 +1,36 @@
+<div class="row well clip-panel">
+    {% set count = 0 %}
+    {% for clip in clips %}
+        {% if count is divisibleby(4) %}
+            <div class="row">
+        {% endif %}
+        <div class="col-md-3">
+            <div align="center" class="embed-responsive embed-responsive-16by9 clip-area" data-clip-url="{{ clip.url }}" data-cover-url="{{ clip.cover_url }}">
+                <img src="{{ clip.cover_url }}" class="embed-responsive-item" alt="Responsive image">
+            </div>
+            <div><button class="btn btn-xs btn-default movie-btn" type="button">{{ clip.name }}</button></div>
+        </div>
+        {% set count = count + 1 %}
+        {% if count is divisibleby(4) %}
+            </div>
+            <br>
+        {% endif %}
+    {% endfor %}
+    {% if count is not divisibleby(4) %}
+        </div>
+    {% endif %}
+    <script>
+        $('.clip-area').click(function () {
+            var temp;
+            if ($(this).children('img').length == 0) {
+                temp = '<img src="' + $(this).attr('data-cover-url') + '" class="embed-responsive-item" alt="Responsive image">';
+            } else {
+                temp = '<video autoplay loop class="embed-responsive-item"> \
+                            <source src="'+ $(this).attr('data-clip-url') +'" type="video/mp4"> \
+                        </video>';
+            }
+            $(this).empty();
+            $(this).append($(temp));
+        });
+    </script>
+</div>

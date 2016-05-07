@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Movie Querier</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        #movie-panel {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+        $(document).on('ready', function () {
+            $('.movie-area').click(function () {
+                var temp;
+                if ($(this).children('img').length == 0) {
+                    temp = '<img src="' + $(this).attr('data-cover-url') + '" class="embed-responsive-item" alt="Responsive image">';
+                } else {
+                    temp = '<video autoplay loop class="embed-responsive-item"> \
+                                <source src="'+ $(this).attr('data-movie-url') +'" type="video/mp4"> \
+                            </video>';
+                }
+                $(this).empty();
+                $(this).append($(temp));
+            });
+            $('.movie-btn').click(function() {
+                var all_btns = $('.movie-btn');
+                all_btns.removeClass('btn-info');
+                all_btns.addClass('btn-default');
+
+                if ($(this).hasClass('active')) {
+                    $('.clip-panel').fadeOut(200, function () {
+                        $(this).remove();
+                    });
+                } else {
+                    $('.clip-panel').remove();
+                    all_btns.removeClass('active');
+                    all_btns.attr('disabled', 'disabled');
+                    $(this).addClass('btn-info');
+                    $(this).removeClass('btn-default');
+                    var parent_row = $(this).parents('.row');
+                    $.get('/clips/' + $(this).text(), function (data) {
+                        var clip_panel = $(data);
+                        clip_panel.attr('style', 'display: none;');
+                        parent_row.after(clip_panel);
+                        clip_panel.fadeIn(200);
+                        all_btns.removeAttr('disabled');
+                    });
+                }
+                $(this).toggleClass('active')
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Movie Querier</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Query</a></li>
+                <li class="active"><a href="/preview">Preview</a></li>
+                <li><a href="#About">About</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+
+    <div id="movie-panel">
+        {% set count = 0 %}
+        {% for movie in movies %}
+            {% if count is divisibleby(3) %}
+                <div class="row">
+            {% endif %}
+            <div class="col-md-4">
+                <div align="center" class="embed-responsive embed-responsive-16by9 movie-area" data-movie-url="{{ movie.url }}" data-cover-url="{{ movie.cover_url }}">
+{#                    <video loop class="embed-responsive-item" controls>#}
+{#                        <source src="{{ movie.url }}" type="video/mp4">#}
+{#                    </video>#}
+                    <img src="{{ movie.cover_url }}" class="embed-responsive-item" alt="Responsive image">
+                </div>
+                <div><button class="btn btn-xs btn-default movie-btn" type="button">{{ movie.name }}</button></div>
+            </div>
+            {% set count = count + 1 %}
+            {% if count is divisibleby(3) %}
+                </div>
+                <br>
+            {% endif %}
+        {% endfor %}
+        {% if count is not divisibleby(3) %}
+            </div>
+        {% endif %}
+</div>
+
+</div><!-- /.container -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
