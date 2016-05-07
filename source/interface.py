@@ -76,6 +76,10 @@ class Interface:
     def _get_scene_directory(self, movie_name, event_index):
         return os.path.join(self._get_movie_workspace(movie_name)['SCENES'], str(event_index))
 
+    @staticmethod
+    def parse_key(key):
+        return get_movie_event(key)
+
     def get_info_data(self):
         return self.DATA_LOADER.load_info_data()
 

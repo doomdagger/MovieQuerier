@@ -1,22 +1,22 @@
 <div class="row well clip-panel">
     {% set count = 0 %}
     {% for clip in clips %}
-        {% if count is divisibleby(4) %}
+        {% if count is divisibleby(6) %}
             <div class="row">
         {% endif %}
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div align="center" class="embed-responsive embed-responsive-16by9 clip-area" data-clip-url="{{ clip.url }}" data-cover-url="{{ clip.cover_url }}">
                 <img src="{{ clip.cover_url }}" class="embed-responsive-item" alt="Responsive image">
             </div>
-            <div><button class="btn btn-xs btn-default clip-btn" type="button">{{ clip.name }}</button></div>
+            <div><button class="btn btn-xs btn-default clip-btn" type="button" data-bind="{{ clip.name }}">{{ clip.short_name }}</button></div>
         </div>
         {% set count = count + 1 %}
-        {% if count is divisibleby(4) %}
+        {% if count is divisibleby(6) %}
             </div>
             <br>
         {% endif %}
     {% endfor %}
-    {% if count is not divisibleby(4) %}
+    {% if count is not divisibleby(6) %}
         </div>
     {% endif %}
     <script>
@@ -36,9 +36,9 @@
             var all_btns = $('.clip-btn');
             all_btns.attr('disabled', 'disabled');
 
-            $('#myModalLabel').text($(this).text());
+            $('#myModalLabel').text($(this).attr('data-bind'));
 
-            $.get('/clip/' + $(this).text(), function (data) {
+            $.get('/clip/' + $(this).attr('data-bind'), function (data) {
                 all_btns.removeAttr('disabled');
                 var modalBody = $('#myModalBody');
                 modalBody.empty();

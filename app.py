@@ -146,7 +146,8 @@ def clips(movie_name):
                                                       os.path.join(os.getcwd(), 'resources')),
             'url': '/assets/' + os.path.relpath(interface.get_clip_path(clip_name),
                                                 os.path.join(os.getcwd(), 'resources')),
-            'name': clip_name
+            'name': clip_name,
+            'short_name': interface.parse_key(clip_name)[1]
         }
         ret.append(temp)
     return render_template('clip_panel.html', clips=ret)
