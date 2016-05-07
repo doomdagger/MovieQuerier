@@ -8,7 +8,7 @@
             <div align="center" class="embed-responsive embed-responsive-16by9 clip-area" data-clip-url="{{ clip.url }}" data-cover-url="{{ clip.cover_url }}">
                 <img src="{{ clip.cover_url }}" class="embed-responsive-item" alt="Responsive image">
             </div>
-            <div><button class="btn btn-xs btn-default movie-btn" type="button">{{ clip.name }}</button></div>
+            <div><button class="btn btn-xs btn-default clip-btn" type="button">{{ clip.name }}</button></div>
         </div>
         {% set count = count + 1 %}
         {% if count is divisibleby(4) %}
@@ -32,5 +32,20 @@
             $(this).empty();
             $(this).append($(temp));
         });
+        $('.clip-btn').click(function () {
+            var all_btns = $('.clip-btn');
+            all_btns.attr('disabled', 'disabled');
+
+            $('#myModalLabel').text($(this).text());
+
+            $.get('/clip/' + $(this).text(), function (data) {
+                all_btns.removeAttr('disabled');
+                var modalBody = $('#myModalBody');
+                modalBody.empty();
+                modalBody.append($(data));
+                $('#myModal').modal()
+            });
+        });
     </script>
+</div>
 </div>

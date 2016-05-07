@@ -1,0 +1,49 @@
+<h3>Scenes</h3>
+<div class="row well">
+    {% set count = 0 %}
+    {% for scene in clip['scene'] %}
+        {% if count is divisibleby(4) %}
+            <div class="row">
+        {% endif %}
+        <div class="col-md-3">
+            <div align="center" class="embed-responsive embed-responsive-16by9">
+                <img src="{{ scene }}" class="embed-responsive-item" alt="Responsive image">
+            </div>
+        </div>
+        {% set count = count + 1 %}
+        {% if count is divisibleby(4) %}
+            </div>
+            <br>
+        {% endif %}
+    {% endfor %}
+    {% if count is not divisibleby(4) %}
+        </div>
+    {% endif %}
+</div>
+</div>
+
+{% if clip['face']|length != 0 %}
+<h3>Faces</h3>
+<div class="row well">
+    {% set count = 0 %}
+    {% for face in clip['face'] %}
+        {% if count is divisibleby(4) %}
+            <div class="row">
+        {% endif %}
+        <div class="col-md-3">
+            <div align="center" class="embed-responsive embed-responsive-16by9">
+                <img src="{{ face }}" class="embed-responsive-item" alt="Responsive image">
+            </div>
+        </div>
+        {% set count = count + 1 %}
+        {% if count is divisibleby(4) %}
+            </div>
+            <br>
+        {% endif %}
+    {% endfor %}
+    {% if count is not divisibleby(4) %}
+        </div>
+    {% endif %}
+</div>
+</div>
+{% endif %}

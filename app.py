@@ -151,5 +151,23 @@ def clips(movie_name):
         ret.append(temp)
     return render_template('clip_panel.html', clips=ret)
 
+
+@app.route('/clip/<clip_name>')
+def clip(clip_name):
+    ret = {}
+    all_faces = interface.get_face_paths(clip_name)
+    all_scenes = interface.get_scene_paths(clip_name)
+
+    ret['scene'] = []
+    ret['face'] = []
+
+    for face in all_faces:
+        ret['face'].append('/assets/' + os.path.relpath(face, os.path.join(os.getcwd(), 'resources')))
+
+    for scene in all_scenes:
+        ret['scene'].append('/assets/' + os.path.relpath(scene, os.path.join(os.getcwd(), 'resources')))
+
+    return render_template('scene_face.html', clip=ret)
+
 if __name__ == '__main__':
     app.run(debug=True)
