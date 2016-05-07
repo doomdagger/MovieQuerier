@@ -70,6 +70,9 @@
 
             $("#query-form").submit(function (event) {
                 event.preventDefault();
+
+                $('#submit-btn').attr('disabled', 'disabled');
+
                 //grab all form data
                 var formData = new FormData($(this)[0]);
 
@@ -78,23 +81,26 @@
                 progress_bar.addClass('progress-bar-striped');
                 progress_bar.removeClass('progress-bar-success');
                 progress_bar.removeClass('progress-bar-danger');
-                progress_bar.attr('aria-valuenow', 0);
-                progress_bar.attr('style', 'width: 0%;');
+                progress_bar.attr('aria-valuenow', 1);
+                progress_bar.attr('style', 'width: 1%;');
+                var count = 0;
                 var temp_interval = setInterval(function () {
+                    if (count++ < 20) {
+                        return;
+                    }
                     var value_now = parseInt(progress_bar.attr('aria-valuenow'));
                     if (value_now >= 100) {
                         return;
                     }
-                    value_now += 5;
+                    value_now += 3;
                     progress_bar.attr('aria-valuenow', value_now);
                     progress_bar.attr('style', 'width: ' + value_now + '%;');
-                }, 10);
+                }, 50);
 
                 $.ajax({
                     url: '/query',
                     type: 'POST',
                     data: formData,
-                    async: false,
                     cache: false,
                     contentType: false,
                     processData: false,
@@ -137,6 +143,8 @@
                             row.append($(temp));
                             count++;
                         });
+
+                        $('#submit-btn').removeAttr('disabled');
                     },
                     error: function (data) {
                         var message_bar = $('#floating_message');
@@ -156,6 +164,8 @@
 
                         var display_panel = $('#movie-panel');
                         display_panel.empty();
+
+                        $('#submit-btn').removeAttr('disabled');
                     }
                 });
 
@@ -185,13 +195,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Movie Querier</a>
+            <a class="navbar-brand" href="/">Movie Querier</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Query</a></li>
                 <li><a href="/preview">Preview</a></li>
-                <li><a href="#About">About</a></li>
+                <li><a href="/about">About</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -228,7 +238,7 @@
                     </div>
                     <br>
                     <div class="row">
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button id="submit-btn" type="submit" class="btn btn-default">Submit</button>
                     </div>
                 </div>
             </div>
