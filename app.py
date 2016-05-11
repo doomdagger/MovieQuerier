@@ -60,6 +60,7 @@ def query():
     all_scenes = interface.get_scene_data()
 
     scene_comp_ret = {}
+    scene_threshold = 0.3
 
     # key: clip name->movie_key
     # value: list of scene descriptor->[descriptor_1, descriptor_2, ...]
@@ -69,7 +70,8 @@ def query():
             temp = interface.compare_descriptor(scene_descriptor, one_des)
             if temp < cur_key_ret:
                 cur_key_ret = temp
-        scene_comp_ret[key] = cur_key_ret
+        if cur_key_ret < scene_threshold:
+            scene_comp_ret[key] = cur_key_ret
 
     if actor_file and actor_file.filename:
         actor_descriptor = interface.get_face_descriptor(
