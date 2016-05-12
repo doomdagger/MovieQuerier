@@ -25,4 +25,4 @@ The server, by default, will listen at `http://localhost:5000`. Before running t
 
 ### Important notion
 
-The whole resources folder is portable. Once you have your movie assets being built, you can keep the resources folder only. For future running, simply replace the empty resources folder with your kept one. The application can then make full advantage of it. Enjoy!
+The whole resources folder is portable. Once you have your movie assets being built, you can keep the resources folder only. For future running, simply replace the empty resources folder with your kept one. The application can then make full use of it. Enjoy!
